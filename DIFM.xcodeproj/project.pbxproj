@@ -14,8 +14,8 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		A620C8150FEDD2F400180CC0 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A620C8130FEDD2F400180CC0 /* PlayerViewController.m */; };
-		A620C8160FEDD2F400180CC0 /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A620C8140FEDD2F400180CC0 /* PlayerView.xib */; };
 		A6763EBB0FEF6EF1009F19DE /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */; };
+		A6763F6A0FF03D06009F19DE /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6763F690FF03D06009F19DE /* PlayerView.xib */; };
 		A68BD01A0FEE19660003FCDB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0190FEE19660003FCDB /* AudioToolbox.framework */; };
 		A68BD01E0FEE1A0E0003FCDB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */; };
 		A68BD0220FEE1A3A0003FCDB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */; };
@@ -35,9 +35,9 @@
 		8D1107310486CEB800E47090 /* DIFM-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DIFM-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A620C8120FEDD2F400180CC0 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		A620C8130FEDD2F400180CC0 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
-		A620C8140FEDD2F400180CC0 /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PlayerView.xib; path = Classes/PlayerView.xib; sourceTree = "<group>"; };
 		A6763EB90FEF6EF1009F19DE /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
+		A6763F690FF03D06009F19DE /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
 		A68BD0190FEE19660003FCDB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -107,7 +107,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				A620C8140FEDD2F400180CC0 /* PlayerView.xib */,
+				A6763F690FF03D06009F19DE /* PlayerView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* DIFM-Info.plist */,
 			);
@@ -171,7 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				A620C8160FEDD2F400180CC0 /* PlayerView.xib in Resources */,
+				A6763F6A0FF03D06009F19DE /* PlayerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
