@@ -11,20 +11,16 @@
 
 // Sound and Network headers for streaming
 #import "AudioStreamer.h"
-#import <QuartzCore/CoreAnimation.h>
-#import <MediaPlayer/MediaPlayer.h>
-#import <CFNetwork/CFNetwork.h>
 
 @implementation DIFMAppDelegate
 
 @synthesize window;
 @synthesize tabBarController;
 @synthesize streamer;
-@synthesize playerView;
+@synthesize currentChannel;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // Override point for customization after application launch
-    [streamer setDelegate:playerView];
     [window addSubview:tabBarController.view];
     [window makeKeyAndVisible];
 }

@@ -8,31 +8,26 @@
 
 #import "ChannelsViewController.h"
 
+#import "DIFMAppDelegate.h"
+
+// Sound and Network headers for streaming
+#import "AudioStreamer.h"
+
 @implementation ChannelsViewController
 
+@synthesize channels;
 @synthesize genres;
-
-/*
- // The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        // Custom initialization
-    }
-    return self;
-}
-*/
-
-/*
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)loadView {
-}
-*/
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"Genres" ofType:@"plist"];
-    NSLog(path);
-    genres = [[NSArray alloc] initWithContentsOfFile:path];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"FreeUrls" ofType:@"plist"];
+    channels = [[NSDictionary alloc] initWithContentsOfFile:path];
+    
+    genres = [[channels allKeys] retain];
+    
+    // point to appdelegate's streamer
+//    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
+//    streamer = [delegate streamer];
     
     [super viewDidLoad];
 }
@@ -58,6 +53,7 @@
 }
 
 - (void)dealloc {
+    [channels release];
     [genres release];
     [super dealloc];
 }
@@ -70,7 +66,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger row = [indexPath row];
+    NSString *selectedGenre = [genres objectAtIndex:[indexPath row]];
+    
     static NSString *genresTableIdentifier = @"GenresTableIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:genresTableIdentifier];
@@ -80,8 +77,51 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:genresTableIdentifier] autorelease];
     }
     
-    cell.textLabel.text = [genres objectAtIndex:row];
+    //cell.textLabel.text = [channels objectAtIndex:row];
+    cell.textLabel.text = selectedGenre;
+    
     return cell;
+}
+
+#pragma mark -
+#pragma mark Table View Delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSUInteger row = [indexPath row];
+    
+    NSString *selectedGenre = [genres objectAtIndex:row];
+    
+    NSString *streamURL = [channels objectForKey:selectedGenre];
+
+    // set the new streamURL here
+    NSString *escapedValue =
+    [(NSString *)CFURLCreateStringByAddingPercentEscapes(
+                                                         nil,
+                                                         (CFStringRef)streamURL,
+                                                         NULL,
+                                                         NULL,
+                                                         kCFStringEncodingUTF8)
+     autorelease];
+    
+	NSURL *url = [NSURL URLWithString:escapedValue];
+    
+    // stop and release the old stream
+    [delegate.streamer stop];
+    NSLog(@"NSURL: %@", url);
+    [delegate.streamer release];
+    
+    // create a new one and start it
+    delegate.streamer = [[AudioStreamer alloc] initWithURL:url];
+    [delegate.streamer setDelegate:[[delegate.tabBarController viewControllers] objectAtIndex:0]];
+    [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+    NSLog(@"Streamer URL: %@", delegate.streamer.url);
+    [delegate.streamer start];
+    // set the new channel name
+    delegate.currentChannel = selectedGenre;
+    
+    // change back to the player view
+    //delegate.tabBarController.selectedViewController = [[delegate.tabBarController viewControllers] objectAtIndex:0];
 }
 
 @end

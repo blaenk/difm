@@ -3,58 +3,52 @@
 <plist version="1.0">
 <dict>
 	<key>Space Music</key>
-	<array>
-		<string>Free Stream with Commercials</string>
-		<string>Premium Stream @ 128kbps</string>
-		<string>Premium Stream @ 256kbps</string>
-	</array>
+	<string>http://94.232.114.240:6304</string>
 	<key>Trance</key>
-	<string></string>
+	<string>http://scfire-ntc-aa07.stream.aol.com:80/stream/1003</string>
 	<key>Vocal Trance</key>
-	<string></string>
+	<string>http://scfire-mtc-aa02.stream.aol.com:80/stream/1065</string>
 	<key>Electro House</key>
-	<string></string>
+	<string>http://scfire-ntc-aa03.stream.aol.com:80/stream/1025</string>
 	<key>Chillout</key>
-	<string></string>
+	<string>http://scfire-ntc-aa01.stream.aol.com:80/stream/1035</string>
 	<key>House</key>
-	<string></string>
+	<string>http://scfire-ntc-aa03.stream.aol.com:80/stream/1007</string>
 	<key>Soulful House</key>
-	<string></string>
+	<string>http://205.188.215.232:8016</string>
 	<key>Hard Dance</key>
-	<string></string>
+	<string>http://209.247.146.98:8000</string>
 	<key>Euro Dance</key>
-	<string></string>
+	<string>http://scfire-mtc-aa03.stream.aol.com:80/stream/1024</string>
 	<key>Minimal</key>
-	<string></string>
+	<string>http://66.135.35.144:8000</string>
 	<key>Techno</key>
-	<string></string>
+	<string>http://88.191.102.29:7204</string>
 	<key>Progressive</key>
-	<string></string>
+	<string>http://scfire-mtc-aa03.stream.aol.com:80/stream/1026</string>
 	<key>Goa-Psy Trance</key>
-	<string></string>
+	<string>http://scfire-ntc-aa03.stream.aol.com:80/stream/1008</string>
 	<key>Hardstyle</key>
-	<string></string>
+	<string>http://72.51.40.90:8000</string>
 	<key>Hard Core</key>
-	<string></string>
+	<string>http://88.191.69.69:80</string>
 	<key>Lounge</key>
-	<string></string>
+	<string>http://scfire-ntc-aa03.stream.aol.com:80/stream/1009</string>
 	<key>Exposure NYC</key>
-	<string></string>
+	<string>http://94.232.114.240:6294</string>
 	<key>DJ Mixes</key>
-	<string></string>
+	<string>http://209.247.146.100:8000</string>
 	<key>Drum &apos;n&apos; Bass</key>
-	<string></string>
+	<string>http://207.200.96.229:8030</string>
 	<key>Oldschool Electronica</key>
-	<string></string>
+	<string>http://205.188.215.225:8004</string>
 	<key>Breaks</key>
-	<string></string>
+	<string>http://205.188.215.225:8002</string>
 	<key>Ambient</key>
-	<string></string>
+	<string>http://205.188.215.228:8006</string>
 	<key>Future Synthpop</key>
-	<string></string>
+	<string>http://94.232.114.240:6234</string>
 	<key>Gabber</key>
-	<string></string>
-	<key>Replay</key>
-	<string></string>
+	<string>http://205.188.215.226:8006</string>
 </dict>
 </plist>

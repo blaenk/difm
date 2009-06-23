@@ -20,7 +20,7 @@
 
 // have the users download the pls file then save the url(s) to the plist?
 
-@class AudioStreamer;
+@class DIFMAppDelegate;
 
 @interface PlayerViewController : UIViewController {
     // Labels
@@ -37,15 +37,17 @@
     // Internals
     BOOL isPlaying;
     
-    // Streamer
-    AudioStreamer *streamer; // will point to the streamer provided by the app delegate
-    
     // Time - this isn't needed, yet
     int seconds;
     int minutes;
     int hours;
     
     NSMutableString *formattedTimeString;
+    
+    DIFMAppDelegate *delegate;
+    
+    NSURL *persistentURL;
+    int persistentTimeInSeconds;
 }
 
 @property (nonatomic, retain) IBOutlet UILabel *playTime;
@@ -58,7 +60,6 @@
 
 - (void)pauseToggle:(id)sender;
 
-- (void)createStreamer;
 - (void)destroyStreamer;
 - (void)updateProgress:(NSTimer *)aNotification;
 - (void)metaDataUpdated:(NSString *)metaData;

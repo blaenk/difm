@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="20"/>
+			<integer value="22"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,36 +48,36 @@
 			<object class="IBUITabBarController" id="116932858">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="827084412">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="7265488">
-						<string key="IBUITitle">Channels</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="980172564">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="200197112">
+						<string key="IBUITitle">Player</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">barimg-channels.png</string>
+							<string key="NSResourceName">barimg-player.png</string>
 						</object>
 						<reference key="IBUITabBar"/>
 					</object>
-					<object class="NSArray" key="IBUIToolbarItems">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-					</object>
 					<reference key="IBUIParentViewController" ref="116932858"/>
-					<string key="IBUINibName">ChannelsView</string>
+					<string key="IBUINibName">PlayerView</string>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="IBUIViewController" id="980172564">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="200197112">
-							<string key="IBUITitle">Player</string>
+					<reference ref="980172564"/>
+					<object class="IBUIViewController" id="827084412">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="7265488">
+							<string key="IBUITitle">Channels</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">barimg-player.png</string>
+								<string key="NSResourceName">barimg-channels.png</string>
 							</object>
 							<reference key="IBUITabBar"/>
 						</object>
+						<object class="NSArray" key="IBUIToolbarItems">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+						</object>
 						<reference key="IBUIParentViewController" ref="116932858"/>
-						<string key="IBUINibName">PlayerView</string>
+						<string key="IBUINibName">ChannelsView</string>
 					</object>
-					<reference ref="827084412"/>
 					<object class="IBUIViewController" id="764904501">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="990296844">
 							<string key="IBUITitle">Social</string>
@@ -142,14 +142,6 @@
 						<reference key="destination" ref="116932858"/>
 					</object>
 					<int key="connectionID">26</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">playerView</string>
-						<reference key="source" ref="664661524"/>
-						<reference key="destination" ref="980172564"/>
-					</object>
-					<int key="connectionID">31</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -299,7 +291,7 @@
 					</object>
 					<string>{{401, 200}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>{{472, 66}, {320, 480}}</string>
+					<string>{{470, 64}, {320, 480}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>PlayerViewController</string>
@@ -352,13 +344,11 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>playerView</string>
 							<string>tabBarController</string>
 							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>PlayerViewController</string>
 							<string>UITabBarController</string>
 							<string>UIWindow</string>
 						</object>

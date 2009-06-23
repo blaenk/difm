@@ -8,12 +8,7 @@
 
 #import "PlayerViewController.h"
 #import "DIFMAppDelegate.h"
-
-// Sound and Network headers for streaming
 #import "AudioStreamer.h"
-#import <QuartzCore/CoreAnimation.h>
-#import <MediaPlayer/MediaPlayer.h>
-#import <CFNetwork/CFNetwork.h>
 
 @implementation PlayerViewController
 
@@ -26,28 +21,37 @@
 @synthesize pauseButton;
 
 - (void)pauseToggle:(id)sender {
-    if (![streamer isPlaying]) {
-        // play the stream
+    if (![delegate.streamer isPlaying]) {
+        // play the same stream again cause they just paused and pressed play again
+        delegate.streamer = [[AudioStreamer alloc] initWithURL:persistentURL];
         
-        [self createStreamer];
+        progressUpdateTimer =
+        [NSTimer
+         scheduledTimerWithTimeInterval:1
+         target:self
+         selector:@selector(updateProgress:)
+         userInfo:nil
+         repeats:YES];
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self
+         selector:@selector(playbackStateChanged:)
+         name:ASStatusChangedNotification
+         object:delegate.streamer];
+        
+        [delegate.streamer setDelegate:self];
+        [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
         
         // loading?
         [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
         
-        [streamer start];
-        isPlaying = TRUE;
+        [delegate.streamer start];
     } else {
         // pause the stream
-        [streamer stop];
+        [delegate.streamer stop];
         
         // save the stream progress
         
-        // erase the labels
-        streamInfo.text = @"Nothing Playing";
-        nowPlayingArtist.text = @"";
-        nowPlayingSong.text = @"";
-        
-        isPlaying = FALSE;
+        // erase the labels here?
     }
 }
 
@@ -56,8 +60,23 @@
     [pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
     
-    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    streamer = [delegate streamer];
+    delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    progressUpdateTimer =
+    [NSTimer
+     scheduledTimerWithTimeInterval:1
+     target:self
+     selector:@selector(updateProgress:)
+     userInfo:nil
+     repeats:YES];
+	[[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(playbackStateChanged:)
+     name:ASStatusChangedNotification
+     object:delegate.streamer];
+    
+    [delegate.streamer setDelegate:self];
+    [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
     
     [super viewDidLoad];
 }
@@ -81,16 +100,24 @@
 }
 
 - (void)dealloc {
-    [self destroyStreamer];
-    [playTime release];
-    [streamInfo release];
+    [self destroyStreamer]; // get rid of the streamer correctly
     
-    [nowPlayingArtist release];
-    [nowPlayingSong release];
+    if (progressUpdateTimer) // and the timer
+	{
+		[progressUpdateTimer invalidate];
+		progressUpdateTimer = nil;
+	}
     
-    [pauseButton release];
+    [playTime release]; // the play time label
+    [streamInfo release]; // the stream info label (channel, etc.)
     
-    [formattedTimeString release];
+    [nowPlayingArtist release]; // the current label artist
+    [nowPlayingSong release]; // the current label
+    
+    [pauseButton release]; // the pause button
+    
+    [formattedTimeString release]; // the formatted time string
+    [persistentURL release]; // get rid of the url
     
     [super dealloc];
 }
@@ -98,45 +125,12 @@
 #pragma mark -
 #pragma mark Streamer
 
-- (void)createStreamer {
-	if (streamer)
-		return;
-    
-	[self destroyStreamer];
-	
-	NSString *escapedValue =
-    [(NSString *)CFURLCreateStringByAddingPercentEscapes(
-                                                         nil,
-                                                         (CFStringRef)@"http://72.26.204.32:80/trance_hi?8548ef3ddf5544f",
-                                                         NULL,
-                                                         NULL,
-                                                         kCFStringEncodingUTF8)
-     autorelease];
-    
-	NSURL *url = [NSURL URLWithString:escapedValue];
-	streamer = [[AudioStreamer alloc] initWithURL:url];
-	
-	progressUpdateTimer =
-    [NSTimer
-     scheduledTimerWithTimeInterval:0.1
-     target:self
-     selector:@selector(updateProgress:)
-     userInfo:nil
-     repeats:YES];
-	[[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(playbackStateChanged:)
-     name:ASStatusChangedNotification
-     object:streamer];
-    
-    [streamer setDelegate:self];
-    [streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-}
-
 - (void)metaDataUpdated:(NSString *)metaData {
+    // parse the important part
     NSString *temp = [metaData stringByReplacingOccurrencesOfString:@"StreamTitle='" withString:@""];
     NSString *temp2 = [temp stringByReplacingOccurrencesOfString:@"';StreamUrl='';" withString:@""];
     
+    // separate the artist from the song, to be able to present it in a nicer way
     NSArray *stringParts = [temp2 componentsSeparatedByString:@" - "];
     
     nowPlayingArtist.text = [stringParts objectAtIndex:0];
@@ -144,25 +138,30 @@
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
-    int totalSeconds = (int)streamer.progress;
+    int totalSeconds = (int)delegate.streamer.progress;
     
+    // empty the string again
     [formattedTimeString setString:@""];
     
     hours = totalSeconds / (60 * 60);
     
+    // only show the hour part if there has been hours passed
     if (hours > 0)
         [formattedTimeString appendFormat:@"%02d:", hours];
     
     minutes = (totalSeconds / 60) % 60;
     seconds = totalSeconds % 60;
     
+    // format the string
     [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
     
-    if (streamer.bitRate != 0.0) {
+    NSLog(@"%d", delegate.streamer.bitRate);
+    
+    if (delegate.streamer.bitRate != 0.0) {
 		playTime.text = formattedTimeString;
         
         // set stream/channel info
-        streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", @"Trance", (streamer.bitRate / 1000)];
+        streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", delegate.currentChannel, (delegate.streamer.bitRate / 1000)];
 	} else {
 		playTime.text = formattedTimeString;
         
@@ -171,32 +170,33 @@
 }
 
 - (void)destroyStreamer {
-	if (streamer)
+	if (delegate.streamer)
 	{
 		[[NSNotificationCenter defaultCenter]
          removeObserver:self
          name:ASStatusChangedNotification
-         object:streamer];
+         object:delegate.streamer];
 		[progressUpdateTimer invalidate];
 		progressUpdateTimer = nil;
 		
-		[streamer stop];
-		[streamer release];
-		streamer = nil;
+		[delegate.streamer stop];
+		[delegate.streamer release];
+		delegate.streamer = nil;
 	}
 }
 
 - (void)playbackStateChanged:(NSNotification *)aNotification {
-	if ([streamer isWaiting])
+	if ([delegate.streamer isWaiting])
 	{
         [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
 	}
-	else if ([streamer isPlaying])
+	else if ([delegate.streamer isPlaying])
 	{
         [pauseButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
 	}
-	else if ([streamer isIdle])
+	else if ([delegate.streamer isIdle])
 	{
+        persistentURL = [delegate.streamer.url retain]; // gotta retain it cause it's about to be released
 		[self destroyStreamer];
 		[pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 	}

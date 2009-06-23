@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface ChannelsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
+    NSDictionary *channels;
     NSArray *genres;
 }
 
+@property (nonatomic, retain) NSDictionary *channels;
 @property (nonatomic, retain) NSArray *genres;
 
 @end

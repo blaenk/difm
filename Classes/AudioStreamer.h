@@ -150,6 +150,7 @@ extern NSString * const ASStatusChangedNotification;
 
 // METADATA //
 @property (nonatomic, retain) NSURL *url;
+//@property (nonatomic, copy) NSURL *url;
 @property BOOL redirect;
 @property BOOL foundIcyStart;
 @property BOOL foundIcyEnd;
@@ -166,6 +167,7 @@ extern NSString * const ASStatusChangedNotification;
 // METADATA //
 
 - (id)initWithURL:(NSURL *)aURL;
+- (id)init;
 - (void)start;
 - (void)stop;
 - (void)pause;

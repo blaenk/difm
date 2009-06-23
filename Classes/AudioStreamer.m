@@ -246,6 +246,21 @@ void ASReadStreamCallBack
 	return self;
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self != nil)
+    {
+        metaDataString = [[NSMutableString alloc] initWithString:@""];
+		
+		didUpdateMetaDataSelector = @selector(metaDataUpdated:);
+		didErrorSelector = @selector(streamError:);
+		didRedirectSelector = @selector(streamRedirect:);
+		delegate = nil;
+    }
+    return self;
+}
+
 //
 // dealloc
 //
