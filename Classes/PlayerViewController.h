@@ -18,6 +18,8 @@
 // -for the channels table view, after a click on a stream, use selectedViewController on the tabBarController
 // -store the AudioStreamer on the appdelegate so that others can use it
 
+// have the users download the pls file then save the url(s) to the plist?
+
 @class AudioStreamer;
 
 @interface PlayerViewController : UIViewController {

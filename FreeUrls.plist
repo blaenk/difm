@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Space Music</key>
+	<array>
+		<string>Free Stream with Commercials</string>
+		<string>Premium Stream @ 128kbps</string>
+		<string>Premium Stream @ 256kbps</string>
+	</array>
+	<key>Trance</key>
+	<string></string>
+	<key>Vocal Trance</key>
+	<string></string>
+	<key>Electro House</key>
+	<string></string>
+	<key>Chillout</key>
+	<string></string>
+	<key>House</key>
+	<string></string>
+	<key>Soulful House</key>
+	<string></string>
+	<key>Hard Dance</key>
+	<string></string>
+	<key>Euro Dance</key>
+	<string></string>
+	<key>Minimal</key>
+	<string></string>
+	<key>Techno</key>
+	<string></string>
+	<key>Progressive</key>
+	<string></string>
+	<key>Goa-Psy Trance</key>
+	<string></string>
+	<key>Hardstyle</key>
+	<string></string>
+	<key>Hard Core</key>
+	<string></string>
+	<key>Lounge</key>
+	<string></string>
+	<key>Exposure NYC</key>
+	<string></string>
+	<key>DJ Mixes</key>
+	<string></string>
+	<key>Drum &apos;n&apos; Bass</key>
+	<string></string>
+	<key>Oldschool Electronica</key>
+	<string></string>
+	<key>Breaks</key>
+	<string></string>
+	<key>Ambient</key>
+	<string></string>
+	<key>Future Synthpop</key>
+	<string></string>
+	<key>Gabber</key>
+	<string></string>
+	<key>Replay</key>
+	<string></string>
+</dict>
+</plist>

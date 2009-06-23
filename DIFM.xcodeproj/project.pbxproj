@@ -14,11 +14,16 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		A620C8150FEDD2F400180CC0 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A620C8130FEDD2F400180CC0 /* PlayerViewController.m */; };
+		A6516F700FF06A3500FF93A4 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A6516F6F0FF06A3500FF93A4 /* Icon.png */; };
+		A6516F720FF06EAD00FF93A4 /* FreeUrls.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6516F710FF06EAD00FF93A4 /* FreeUrls.plist */; };
 		A6763EBB0FEF6EF1009F19DE /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */; };
 		A6763F6A0FF03D06009F19DE /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6763F690FF03D06009F19DE /* PlayerView.xib */; };
 		A68152170FF055430086DB38 /* barimg-channels.png in Resources */ = {isa = PBXBuildFile; fileRef = A68152140FF055430086DB38 /* barimg-channels.png */; };
 		A68152180FF055430086DB38 /* barimg-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = A68152150FF055430086DB38 /* barimg-settings.png */; };
 		A68152190FF055430086DB38 /* barimg-social.png in Resources */ = {isa = PBXBuildFile; fileRef = A68152160FF055430086DB38 /* barimg-social.png */; };
+		A68152250FF05C020086DB38 /* ChannelsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68152240FF05C020086DB38 /* ChannelsViewController.m */; };
+		A681525F0FF05DC00086DB38 /* Genres.plist in Resources */ = {isa = PBXBuildFile; fileRef = A681525E0FF05DC00086DB38 /* Genres.plist */; };
+		A68152610FF0621F0086DB38 /* ChannelsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A68152600FF0621F0086DB38 /* ChannelsView.xib */; };
 		A68BD01A0FEE19660003FCDB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0190FEE19660003FCDB /* AudioToolbox.framework */; };
 		A68BD01E0FEE1A0E0003FCDB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */; };
 		A68BD0220FEE1A3A0003FCDB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */; };
@@ -43,12 +48,18 @@
 		8D1107310486CEB800E47090 /* DIFM-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DIFM-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A620C8120FEDD2F400180CC0 /* PlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerViewController.h; sourceTree = "<group>"; };
 		A620C8130FEDD2F400180CC0 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
+		A6516F6F0FF06A3500FF93A4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		A6516F710FF06EAD00FF93A4 /* FreeUrls.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FreeUrls.plist; sourceTree = "<group>"; };
 		A6763EB90FEF6EF1009F19DE /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		A6763F690FF03D06009F19DE /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
 		A68152140FF055430086DB38 /* barimg-channels.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barimg-channels.png"; sourceTree = "<group>"; };
 		A68152150FF055430086DB38 /* barimg-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barimg-settings.png"; sourceTree = "<group>"; };
 		A68152160FF055430086DB38 /* barimg-social.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barimg-social.png"; sourceTree = "<group>"; };
+		A68152230FF05C020086DB38 /* ChannelsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChannelsViewController.h; sourceTree = "<group>"; };
+		A68152240FF05C020086DB38 /* ChannelsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChannelsViewController.m; sourceTree = "<group>"; };
+		A681525E0FF05DC00086DB38 /* Genres.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Genres.plist; sourceTree = "<group>"; };
+		A68152600FF0621F0086DB38 /* ChannelsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChannelsView.xib; sourceTree = "<group>"; };
 		A68BD0190FEE19660003FCDB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
 		A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -85,6 +96,8 @@
 				A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */,
 				A620C8120FEDD2F400180CC0 /* PlayerViewController.h */,
 				A620C8130FEDD2F400180CC0 /* PlayerViewController.m */,
+				A68152230FF05C020086DB38 /* ChannelsViewController.h */,
+				A68152240FF05C020086DB38 /* ChannelsViewController.m */,
 				1D3623240D0F684500981E51 /* DIFMAppDelegate.h */,
 				1D3623250D0F684500981E51 /* DIFMAppDelegate.m */,
 			);
@@ -123,6 +136,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A6516F6F0FF06A3500FF93A4 /* Icon.png */,
 				A68152140FF055430086DB38 /* barimg-channels.png */,
 				A68152150FF055430086DB38 /* barimg-settings.png */,
 				A68152160FF055430086DB38 /* barimg-social.png */,
@@ -132,8 +146,11 @@
 				A6CB475D0FF0545500EC1CF4 /* pause.png */,
 				A6CB475E0FF0545500EC1CF4 /* play.png */,
 				A6763F690FF03D06009F19DE /* PlayerView.xib */,
+				A68152600FF0621F0086DB38 /* ChannelsView.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* DIFM-Info.plist */,
+				A681525E0FF05DC00086DB38 /* Genres.plist */,
+				A6516F710FF06EAD00FF93A4 /* FreeUrls.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -204,6 +221,10 @@
 				A68152170FF055430086DB38 /* barimg-channels.png in Resources */,
 				A68152180FF055430086DB38 /* barimg-settings.png in Resources */,
 				A68152190FF055430086DB38 /* barimg-social.png in Resources */,
+				A681525F0FF05DC00086DB38 /* Genres.plist in Resources */,
+				A68152610FF0621F0086DB38 /* ChannelsView.xib in Resources */,
+				A6516F700FF06A3500FF93A4 /* Icon.png in Resources */,
+				A6516F720FF06EAD00FF93A4 /* FreeUrls.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +239,7 @@
 				1D3623260D0F684500981E51 /* DIFMAppDelegate.m in Sources */,
 				A620C8150FEDD2F400180CC0 /* PlayerViewController.m in Sources */,
 				A6763EBB0FEF6EF1009F19DE /* AudioStreamer.m in Sources */,
+				A68152250FF05C020086DB38 /* ChannelsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
