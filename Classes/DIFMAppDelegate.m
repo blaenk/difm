@@ -24,7 +24,6 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // Override point for customization after application launch
-    // [streamer setDelegate:[[tabBarController viewControllers] objectAtIndex:0]];
     [streamer setDelegate:playerView];
     [window addSubview:tabBarController.view];
     [window makeKeyAndVisible];

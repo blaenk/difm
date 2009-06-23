@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="22"/>
+			<integer value="23"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,27 +48,37 @@
 			<object class="IBUITabBarController" id="116932858">
 				<object class="IBUISimulatedTabBarMetrics" key="IBUISimulatedBottomBarMetrics"/>
 				<object class="IBUISimulatedStatusBarMetrics" key="IBUISimulatedStatusBarMetrics"/>
-				<object class="IBUIViewController" key="IBUISelectedViewController" id="980172564">
-					<object class="IBUITabBarItem" key="IBUITabBarItem" id="200197112">
-						<string key="IBUITitle">Player</string>
+				<object class="IBUIViewController" key="IBUISelectedViewController" id="396849481">
+					<object class="IBUITabBarItem" key="IBUITabBarItem" id="984792843">
+						<string key="IBUITitle">Settings</string>
 						<object class="NSCustomResource" key="IBUIImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">ipod.png</string>
+							<string key="NSResourceName">barimg-settings.png</string>
 						</object>
 						<reference key="IBUITabBar"/>
 					</object>
 					<reference key="IBUIParentViewController" ref="116932858"/>
-					<string key="IBUINibName">PlayerView</string>
 				</object>
 				<object class="NSMutableArray" key="IBUIViewControllers">
 					<bool key="EncodedWithXMLCoder">YES</bool>
-					<reference ref="980172564"/>
+					<object class="IBUIViewController" id="980172564">
+						<object class="IBUITabBarItem" key="IBUITabBarItem" id="200197112">
+							<string key="IBUITitle">Player</string>
+							<object class="NSCustomResource" key="IBUIImage">
+								<string key="NSClassName">NSImage</string>
+								<string key="NSResourceName">barimg-player.png</string>
+							</object>
+							<reference key="IBUITabBar"/>
+						</object>
+						<reference key="IBUIParentViewController" ref="116932858"/>
+						<string key="IBUINibName">PlayerView</string>
+					</object>
 					<object class="IBUIViewController" id="827084412">
 						<object class="IBUITabBarItem" key="IBUITabBarItem" id="7265488">
 							<string key="IBUITitle">Channels</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">channels.png</string>
+								<string key="NSResourceName">barimg-channels.png</string>
 							</object>
 							<reference key="IBUITabBar"/>
 						</object>
@@ -82,7 +92,7 @@
 							<string key="IBUITitle">Social</string>
 							<object class="NSCustomResource" key="IBUIImage">
 								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">social.png</string>
+								<string key="NSResourceName">barimg-social.png</string>
 							</object>
 							<reference key="IBUITabBar"/>
 						</object>
@@ -91,17 +101,7 @@
 						</object>
 						<reference key="IBUIParentViewController" ref="116932858"/>
 					</object>
-					<object class="IBUIViewController" id="396849481">
-						<object class="IBUITabBarItem" key="IBUITabBarItem" id="984792843">
-							<string key="IBUITitle">Settings</string>
-							<object class="NSCustomResource" key="IBUIImage">
-								<string key="NSClassName">NSImage</string>
-								<string key="NSResourceName">settings.png</string>
-							</object>
-							<reference key="IBUITabBar"/>
-						</object>
-						<reference key="IBUIParentViewController" ref="116932858"/>
-					</object>
+					<reference ref="396849481"/>
 				</object>
 				<object class="IBUITabBar" key="IBUITabBar" id="472851894">
 					<nil key="NSNextResponder"/>

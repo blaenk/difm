@@ -8,6 +8,7 @@
 
 #import "PlayerViewController.h"
 #import "DIFMAppDelegate.h"
+
 // Sound and Network headers for streaming
 #import "AudioStreamer.h"
 #import <QuartzCore/CoreAnimation.h>
@@ -24,6 +25,79 @@
 
 @synthesize pauseButton;
 
+- (void)pauseToggle:(id)sender {
+    if (![streamer isPlaying]) {
+        // play the stream
+        
+        [self createStreamer];
+        
+        // loading?
+        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
+        
+        [streamer start];
+        isPlaying = TRUE;
+    } else {
+        // pause the stream
+        [streamer stop];
+        
+        // save the stream progress
+        
+        // erase the labels
+        streamInfo.text = @"Nothing Playing";
+        nowPlayingArtist.text = @"";
+        nowPlayingSong.text = @"";
+        
+        isPlaying = FALSE;
+    }
+}
+
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad {
+    [pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
+    
+    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    streamer = [delegate streamer];
+    
+    [super viewDidLoad];
+}
+
+// Override to allow orientations other than the default portrait orientation.
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)didReceiveMemoryWarning {
+	// Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+	
+	// Release any cached data, images, etc that aren't in use.
+}
+
+- (void)viewDidUnload {
+	// Release any retained subviews of the main view.
+	// e.g. self.myOutlet = nil;
+}
+
+- (void)dealloc {
+    [self destroyStreamer];
+    [playTime release];
+    [streamInfo release];
+    
+    [nowPlayingArtist release];
+    [nowPlayingSong release];
+    
+    [pauseButton release];
+    
+    [formattedTimeString release];
+    
+    [super dealloc];
+}
+
+#pragma mark -
+#pragma mark Streamer
+
 - (void)createStreamer {
 	if (streamer)
 		return;
@@ -37,7 +111,7 @@
                                                          NULL,
                                                          NULL,
                                                          kCFStringEncodingUTF8)
-                                                         autorelease];
+     autorelease];
     
 	NSURL *url = [NSURL URLWithString:escapedValue];
 	streamer = [[AudioStreamer alloc] initWithURL:url];
@@ -67,6 +141,33 @@
     
     nowPlayingArtist.text = [stringParts objectAtIndex:0];
     nowPlayingSong.text = [stringParts objectAtIndex:1];
+}
+
+- (void)updateProgress:(NSTimer *)updatedTimer {
+    int totalSeconds = (int)streamer.progress;
+    
+    [formattedTimeString setString:@""];
+    
+    hours = totalSeconds / (60 * 60);
+    
+    if (hours > 0)
+        [formattedTimeString appendFormat:@"%02d:", hours];
+    
+    minutes = (totalSeconds / 60) % 60;
+    seconds = totalSeconds % 60;
+    
+    [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
+    
+    if (streamer.bitRate != 0.0) {
+		playTime.text = formattedTimeString;
+        
+        // set stream/channel info
+        streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", @"Trance", (streamer.bitRate / 1000)];
+	} else {
+		playTime.text = formattedTimeString;
+        
+        streamInfo.text = @"Nothing Playing";
+	}
 }
 
 - (void)destroyStreamer {
@@ -100,105 +201,5 @@
 		[pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 	}
 }
-
-- (void)pauseToggle:(id)sender {
-    if (![streamer isPlaying]) {
-        // play the stream
-        
-        [self createStreamer];
-        
-        // loading?
-        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
-        
-        [streamer start];
-        isPlaying = TRUE;
-    } else {
-        // pause the stream
-        [streamer stop];
-        
-        // save the stream progress
-        
-        // erase the labels
-        streamInfo.text = @"Nothing Playing";
-        nowPlayingArtist.text = @"";
-        nowPlayingSong.text = @"";
-        
-        isPlaying = FALSE;
-    }
-}
-
-- (void)updateProgress:(NSTimer *)updatedTimer {
-    int totalSeconds = (int)streamer.progress;
-    
-    [formattedTimeString setString:@""];
-    
-    hours = totalSeconds / (60 * 60);
-    
-    if (hours > 0)
-        [formattedTimeString appendFormat:@"%02d:", hours];
-    
-    minutes = (totalSeconds / 60) % 60;
-    seconds = totalSeconds % 60;
-    
-    [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
-    
-    if (streamer.bitRate != 0.0) {
-		playTime.text = formattedTimeString;
-        
-        // set stream/channel info
-        streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", @"Trance", (streamer.bitRate / 1000)];
-	} else {
-		playTime.text = formattedTimeString;
-        
-        streamInfo.text = @"Nothing Playing";
-	}
-}
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
-    formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
-    
-    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    streamer = [delegate streamer];
-    
-    [super viewDidLoad];
-}
-
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-- (void)dealloc {
-    [self destroyStreamer];
-    [playTime release];
-    [streamInfo release];
-    
-    [nowPlayingArtist release];
-    [nowPlayingSong release];
-    
-    [pauseButton release];
-    
-    [formattedTimeString release];
-    
-    [super dealloc];
-}
-
 
 @end
