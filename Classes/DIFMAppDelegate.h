@@ -3,7 +3,7 @@
 //  DIFM
 //
 //  Created by Blaenk on 6/20/09.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//  Copyright Blaenk Denum 2009. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -21,6 +21,7 @@
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+
 @property (nonatomic, retain) AudioStreamer *streamer;
 @property (nonatomic, retain) NSString *currentChannel;
 

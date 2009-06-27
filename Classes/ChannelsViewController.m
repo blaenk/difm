@@ -3,7 +3,7 @@
 //  DIFM
 //
 //  Created by Blaenk on 6/22/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Blaenk Denum. All rights reserved.
 //
 
 #import "ChannelsViewController.h"
@@ -15,19 +15,12 @@
 
 @implementation ChannelsViewController
 
-@synthesize channels;
-@synthesize genres;
-
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     NSString *path = [[NSBundle mainBundle] pathForResource:@"FreeUrls" ofType:@"plist"];
     channels = [[NSDictionary alloc] initWithContentsOfFile:path];
     
     genres = [[channels allKeys] retain];
-    
-    // point to appdelegate's streamer
-//    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
-//    streamer = [delegate streamer];
     
     [super viewDidLoad];
 }
@@ -47,10 +40,10 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
+//- (void)viewDidUnload {
+//	// Release any retained subviews of the main view.
+//	// e.g. self.myOutlet = nil;
+//}
 
 - (void)dealloc {
     [channels release];
@@ -73,11 +66,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:genresTableIdentifier];
     
     if (cell == nil) {
-        //cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:genresTableIdentifier] autorelease];
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:genresTableIdentifier] autorelease];
     }
     
-    //cell.textLabel.text = [channels objectAtIndex:row];
     cell.textLabel.text = selectedGenre;
     
     return cell;
@@ -108,15 +99,16 @@
     
     // stop and release the old stream
     [delegate.streamer stop];
-    NSLog(@"NSURL: %@", url);
     [delegate.streamer release];
     
     // create a new one and start it
     delegate.streamer = [[AudioStreamer alloc] initWithURL:url];
-    [delegate.streamer setDelegate:[[delegate.tabBarController viewControllers] objectAtIndex:0]];
-    [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-    NSLog(@"Streamer URL: %@", delegate.streamer.url);
+    //[delegate.streamer setDelegate:[[delegate.tabBarController viewControllers] objectAtIndex:0]];
+    delegate.streamer.delegate = [delegate.tabBarController.viewControllers objectAtIndex:0];
+    //[delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+    delegate.streamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
     [delegate.streamer start];
+    
     // set the new channel name
     delegate.currentChannel = selectedGenre;
     

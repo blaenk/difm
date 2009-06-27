@@ -3,7 +3,7 @@
 //  DIFM
 //
 //  Created by Blaenk on 6/20/09.
-//  Copyright __MyCompanyName__ 2009. All rights reserved.
+//  Copyright Blaenk Denum 2009. All rights reserved.
 //
 
 #import "DIFMAppDelegate.h"
@@ -21,7 +21,7 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // Override point for customization after application launch
-    [window addSubview:tabBarController.view];
+    [window addSubview:self.tabBarController.view];
     [window makeKeyAndVisible];
 }
 

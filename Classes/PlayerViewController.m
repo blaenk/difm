@@ -3,12 +3,14 @@
 //  DIFM
 //
 //  Created by Blaenk on 6/20/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Blaenk Denum. All rights reserved.
 //
 
 #import "PlayerViewController.h"
 #import "DIFMAppDelegate.h"
 #import "AudioStreamer.h"
+
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation PlayerViewController
 
@@ -18,36 +20,54 @@
 @synthesize nowPlayingArtist;
 @synthesize nowPlayingSong;
 
+@synthesize volumeView;
+
 @synthesize pauseButton;
 
 - (void)pauseToggle:(id)sender {
     if (![delegate.streamer isPlaying]) {
+        // sanity check -- no channel to stream, alert the user
+        if (delegate.streamer.url == nil) {
+            UIAlertView *noURL = [[UIAlertView alloc] initWithTitle:@"No Channel Specified"
+                                                        message:@"You have not chosen a channel to stream."
+                                                        delegate:nil
+                                                        cancelButtonTitle:@"Ok"
+                                                        otherButtonTitles:nil];
+            [noURL show];
+            [noURL release];
+        }
+        
         // play the same stream again cause they just paused and pressed play again
-        delegate.streamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+//        delegate.streamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+//        
+//        progressUpdateTimer =
+//        [NSTimer
+//         scheduledTimerWithTimeInterval:1
+//         target:self
+//         selector:@selector(updateProgress:)
+//         userInfo:nil
+//         repeats:YES];
+//        [[NSNotificationCenter defaultCenter]
+//         addObserver:self
+//         selector:@selector(playbackStateChanged:)
+//         name:ASStatusChangedNotification
+//         object:delegate.streamer];
+//        
+//        [delegate.streamer setDelegate:self];
+//        [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+//        
+//        // loading?
+//        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
         
-        progressUpdateTimer =
-        [NSTimer
-         scheduledTimerWithTimeInterval:1
-         target:self
-         selector:@selector(updateProgress:)
-         userInfo:nil
-         repeats:YES];
-        [[NSNotificationCenter defaultCenter]
-         addObserver:self
-         selector:@selector(playbackStateChanged:)
-         name:ASStatusChangedNotification
-         object:delegate.streamer];
         
-        [delegate.streamer setDelegate:self];
-        [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-        
-        // loading?
-        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
-        
-        [delegate.streamer start];
+        // pause is a toggle method, but it seems to have unpredictable
+        // implications on the buffers. perhaps it is better to simply
+        // stop the stream and reinitiate it. will have to keep a persistent
+        // time in seconds as well as URL
+        [delegate.streamer pause];
     } else {
         // pause the stream
-        [delegate.streamer stop];
+        [delegate.streamer pause];
         
         // save the stream progress
         
@@ -57,14 +77,18 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
     
     delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
     
+    MPVolumeView *mpVolumeView = [[[MPVolumeView alloc] initWithFrame:self.volumeView.bounds] autorelease];
+	[self.volumeView addSubview:mpVolumeView];
+	[mpVolumeView sizeToFit];
+    
     progressUpdateTimer =
     [NSTimer
-     scheduledTimerWithTimeInterval:1
+     scheduledTimerWithTimeInterval:0.5
      target:self
      selector:@selector(updateProgress:)
      userInfo:nil
@@ -75,8 +99,10 @@
      name:ASStatusChangedNotification
      object:delegate.streamer];
     
-    [delegate.streamer setDelegate:self];
-    [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+    //[delegate.streamer setDelegate:self];
+    delegate.streamer.delegate = self;
+    //[delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+    delegate.streamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
     
     [super viewDidLoad];
 }
@@ -114,6 +140,8 @@
     [nowPlayingArtist release]; // the current label artist
     [nowPlayingSong release]; // the current label
     
+    [volumeView release];
+    
     [pauseButton release]; // the pause button
     
     [formattedTimeString release]; // the formatted time string
@@ -133,8 +161,8 @@
     // separate the artist from the song, to be able to present it in a nicer way
     NSArray *stringParts = [temp2 componentsSeparatedByString:@" - "];
     
-    nowPlayingArtist.text = [stringParts objectAtIndex:0];
-    nowPlayingSong.text = [stringParts objectAtIndex:1];
+    self.nowPlayingArtist.text = [stringParts objectAtIndex:0];
+    self.nowPlayingSong.text = [stringParts objectAtIndex:1];
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
@@ -155,17 +183,15 @@
     // format the string
     [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
     
-    NSLog(@"%d", delegate.streamer.bitRate);
-    
     if (delegate.streamer.bitRate != 0.0) {
-		playTime.text = formattedTimeString;
+        playTime.text = formattedTimeString;
         
-        // set stream/channel info
-        streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", delegate.currentChannel, (delegate.streamer.bitRate / 1000)];
+        // set stream/channel info - memory problem?
+        self.streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", delegate.currentChannel, (delegate.streamer.bitRate / 1000)];
 	} else {
-		playTime.text = formattedTimeString;
+		self.playTime.text = formattedTimeString;
         
-        streamInfo.text = @"Nothing Playing";
+        self.streamInfo.text = @"Nothing Playing";
 	}
 }
 
@@ -188,16 +214,21 @@
 - (void)playbackStateChanged:(NSNotification *)aNotification {
 	if ([delegate.streamer isWaiting])
 	{
-        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
+        [self.pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
 	}
 	else if ([delegate.streamer isPlaying])
 	{
-        [pauseButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
+        [self.pauseButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
 	}
+    else if ([delegate.streamer isPaused])
+    {
+        [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
+    }
 	else if ([delegate.streamer isIdle])
 	{
-        persistentURL = [delegate.streamer.url retain]; // gotta retain it cause it's about to be released
-		[self destroyStreamer];
+        // commented out the stop/reinitiate pause process, which might be better
+        //persistentURL = [delegate.streamer.url retain]; // gotta retain it cause it's about to be released
+		//[self destroyStreamer];
 		[pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 	}
 }

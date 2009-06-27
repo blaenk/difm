@@ -99,10 +99,10 @@ extern NSString * const ASStatusChangedNotification;
 	AudioStreamerErrorCode errorCode;
 	OSErr err;
 	
-	bool discontinuous;			// flag to indicate middle of the stream
+	bool discontinuous; // flag to indicate middle of the stream
 	
-	pthread_mutex_t queueBuffersMutex;			// a mutex to protect the inuse flags
-	pthread_cond_t queueBufferReadyCondition;	// a condition varable for handling the inuse flags
+	pthread_mutex_t queueBuffersMutex; // a mutex to protect the inuse flags
+	pthread_cond_t queueBufferReadyCondition; // a condition varable for handling the inuse flags
 
 	CFReadStreamRef stream;
 	NSNotificationCenter *notificationCenter;
@@ -133,11 +133,11 @@ extern NSString * const ASStatusChangedNotification;
 	BOOL foundIcyEnd;
 	BOOL parsedHeaders;
 	
-	NSMutableString *metaDataString;			// the metaDataString
+	NSMutableString *metaDataString; // the metaDataString
     
-    unsigned int metaDataInterval;					// how many data bytes between meta data
-	unsigned int metaDataBytesRemaining;	// how many bytes of metadata remain to be read
-	unsigned int dataBytesRead;							// how many bytes of data have been read
+    unsigned int metaDataInterval; // how many data bytes between meta data
+	unsigned int metaDataBytesRemaining; // how many bytes of metadata remain to be read
+	unsigned int dataBytesRead;	// how many bytes of data have been read
     
     pthread_mutex_t mutexMeta;
     // METADATA //
@@ -150,7 +150,6 @@ extern NSString * const ASStatusChangedNotification;
 
 // METADATA //
 @property (nonatomic, retain) NSURL *url;
-//@property (nonatomic, copy) NSURL *url;
 @property BOOL redirect;
 @property BOOL foundIcyStart;
 @property BOOL foundIcyEnd;
@@ -161,9 +160,6 @@ extern NSString * const ASStatusChangedNotification;
 @property (assign) SEL didErrorSelector;
 @property (assign) SEL didRedirectSelector;
 
-//@property unsigned int metaDataInterval;
-//@property unsigned int metaDataBytesRemaining;
-//@property unsigned int dataBytesRead;
 // METADATA //
 
 - (id)initWithURL:(NSURL *)aURL;
