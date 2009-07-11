@@ -629,6 +629,7 @@ void ASReadStreamCallBack
 		CFHTTPMessageRef message= CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (CFURLRef)url, kCFHTTPVersion1_1);
         // METADATA //
         CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Icy-MetaData"), CFSTR("1"));
+        // set the user agent here?
         // METADATA //
 		stream = CFReadStreamCreateForHTTPRequest(NULL, message);
 		CFRelease(message);
