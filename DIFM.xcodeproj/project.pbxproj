@@ -16,7 +16,6 @@
 		A620C8150FEDD2F400180CC0 /* PlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A620C8130FEDD2F400180CC0 /* PlayerViewController.m */; };
 		A6516F700FF06A3500FF93A4 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = A6516F6F0FF06A3500FF93A4 /* Icon.png */; };
 		A6516F720FF06EAD00FF93A4 /* FreeUrls.plist in Resources */ = {isa = PBXBuildFile; fileRef = A6516F710FF06EAD00FF93A4 /* FreeUrls.plist */; };
-		A65172CD0FF0CC5400FF93A4 /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = A65172CC0FF0CC5400FF93A4 /* notes.txt */; };
 		A6763EBB0FEF6EF1009F19DE /* AudioStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */; };
 		A6763F6A0FF03D06009F19DE /* PlayerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6763F690FF03D06009F19DE /* PlayerView.xib */; };
 		A68152170FF055430086DB38 /* barimg-channels.png in Resources */ = {isa = PBXBuildFile; fileRef = A68152140FF055430086DB38 /* barimg-channels.png */; };
@@ -52,7 +51,6 @@
 		A620C8130FEDD2F400180CC0 /* PlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerViewController.m; sourceTree = "<group>"; };
 		A6516F6F0FF06A3500FF93A4 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		A6516F710FF06EAD00FF93A4 /* FreeUrls.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = FreeUrls.plist; sourceTree = "<group>"; };
-		A65172CC0FF0CC5400FF93A4 /* notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
 		A6763EB90FEF6EF1009F19DE /* AudioStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioStreamer.m; sourceTree = "<group>"; };
 		A6763F690FF03D06009F19DE /* PlayerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerView.xib; sourceTree = "<group>"; };
@@ -107,7 +105,6 @@
 				A68152240FF05C020086DB38 /* ChannelsViewController.m */,
 				A68F9D4A100951E200541855 /* DIFMStreamer.h */,
 				A68F9D4B100951E200541855 /* DIFMStreamer.m */,
-				A65172CC0FF0CC5400FF93A4 /* notes.txt */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -233,7 +230,6 @@
 				A68152610FF0621F0086DB38 /* ChannelsView.xib in Resources */,
 				A6516F700FF06A3500FF93A4 /* Icon.png in Resources */,
 				A6516F720FF06EAD00FF93A4 /* FreeUrls.plist in Resources */,
-				A65172CD0FF0CC5400FF93A4 /* notes.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
