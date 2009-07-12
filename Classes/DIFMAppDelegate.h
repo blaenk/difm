@@ -14,16 +14,10 @@
 @interface DIFMAppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
-    
-    AudioStreamer *streamer; // the streamer that any view can retrieve
-    NSString *currentChannel; // the currently playing channel
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
-
-@property (nonatomic, retain) AudioStreamer *streamer;
-@property (nonatomic, retain) NSString *currentChannel;
 
 @end
 

@@ -1,0 +1,36 @@
+//
+//  DIFMStreamer.h
+//  DIFM
+//
+//  Created by Blaenk on 7/11/09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class AudioStreamer;
+
+@interface DIFMStreamer : NSObject {
+    AudioStreamer *audioStreamer;
+    
+    // persistent data -- for when stopping/playing
+    NSString *currentChannel;
+    NSURL *persistentURL;
+    int totalSecondsLapsed;
+}
+
+@property (nonatomic, retain) AudioStreamer *audioStreamer;
+@property (copy) NSString *currentChannel;
+@property (nonatomic, retain) NSURL *persistentURL;
+@property int totalSecondsLapsed;
+
+// methods
+
++ (DIFMStreamer *) sharedInstance;
+- (void) setStreamerURL:(NSURL *)streamURL;
+- (void) setStreamerURLWithString:(NSString *)streamURL;
+- (void) stopAndReleaseStreamer;
+- (void) restartStreamerWithPersistentData;
+- (void) destroyStreamer;
+
+@end

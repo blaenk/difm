@@ -29,6 +29,7 @@
 		A68BD01E0FEE1A0E0003FCDB /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */; };
 		A68BD0220FEE1A3A0003FCDB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */; };
 		A68BD0260FEE1A500003FCDB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A68BD0250FEE1A500003FCDB /* QuartzCore.framework */; };
+		A68F9D4C100951E200541855 /* DIFMStreamer.m in Sources */ = {isa = PBXBuildFile; fileRef = A68F9D4B100951E200541855 /* DIFMStreamer.m */; };
 		A6CB475F0FF0545500EC1CF4 /* di_logo_short.png in Resources */ = {isa = PBXBuildFile; fileRef = A6CB475A0FF0545500EC1CF4 /* di_logo_short.png */; };
 		A6CB47600FF0545500EC1CF4 /* barimg-player.png in Resources */ = {isa = PBXBuildFile; fileRef = A6CB475B0FF0545500EC1CF4 /* barimg-player.png */; };
 		A6CB47610FF0545500EC1CF4 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = A6CB475C0FF0545500EC1CF4 /* loading.png */; };
@@ -66,6 +67,8 @@
 		A68BD01D0FEE1A0E0003FCDB /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		A68BD0210FEE1A3A0003FCDB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		A68BD0250FEE1A500003FCDB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A68F9D4A100951E200541855 /* DIFMStreamer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DIFMStreamer.h; sourceTree = "<group>"; };
+		A68F9D4B100951E200541855 /* DIFMStreamer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DIFMStreamer.m; sourceTree = "<group>"; };
 		A6CB475A0FF0545500EC1CF4 /* di_logo_short.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = di_logo_short.png; sourceTree = "<group>"; };
 		A6CB475B0FF0545500EC1CF4 /* barimg-player.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "barimg-player.png"; sourceTree = "<group>"; };
 		A6CB475C0FF0545500EC1CF4 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
@@ -94,14 +97,16 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1D3623240D0F684500981E51 /* DIFMAppDelegate.h */,
+				1D3623250D0F684500981E51 /* DIFMAppDelegate.m */,
 				A6763EB90FEF6EF1009F19DE /* AudioStreamer.h */,
 				A6763EBA0FEF6EF1009F19DE /* AudioStreamer.m */,
 				A620C8120FEDD2F400180CC0 /* PlayerViewController.h */,
 				A620C8130FEDD2F400180CC0 /* PlayerViewController.m */,
 				A68152230FF05C020086DB38 /* ChannelsViewController.h */,
 				A68152240FF05C020086DB38 /* ChannelsViewController.m */,
-				1D3623240D0F684500981E51 /* DIFMAppDelegate.h */,
-				1D3623250D0F684500981E51 /* DIFMAppDelegate.m */,
+				A68F9D4A100951E200541855 /* DIFMStreamer.h */,
+				A68F9D4B100951E200541855 /* DIFMStreamer.m */,
 				A65172CC0FF0CC5400FF93A4 /* notes.txt */,
 			);
 			path = Classes;
@@ -244,6 +249,7 @@
 				A620C8150FEDD2F400180CC0 /* PlayerViewController.m in Sources */,
 				A6763EBB0FEF6EF1009F19DE /* AudioStreamer.m in Sources */,
 				A68152250FF05C020086DB38 /* ChannelsViewController.m in Sources */,
+				A68F9D4C100951E200541855 /* DIFMStreamer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
