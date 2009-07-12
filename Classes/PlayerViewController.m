@@ -42,26 +42,11 @@
 
         // play the same stream again cause they just paused and pressed play again
         [[DIFMStreamer sharedInstance] restartStreamerWithPersistentData];
-
-
-//        progressUpdateTimer =
-//        [NSTimer
-//         scheduledTimerWithTimeInterval:1
-//         target:self
-//         selector:@selector(updateProgress:)
-//         userInfo:nil
-//         repeats:YES];
-//        [[NSNotificationCenter defaultCenter]
-//         addObserver:self
-//         selector:@selector(playbackStateChanged:)
-//         name:ASStatusChangedNotification
-//         object:delegate.streamer];
         
         [[DIFMStreamer sharedInstance].audioStreamer setDelegate:self];
         [[DIFMStreamer sharedInstance].audioStreamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
 
         // loading?
-        //[pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
     } else {
         [[DIFMStreamer sharedInstance].audioStreamer stop];
         
@@ -93,9 +78,7 @@
      name:ASStatusChangedNotification
      object:[DIFMStreamer sharedInstance].audioStreamer];
     
-    //[delegate.streamer setDelegate:self];
     [DIFMStreamer sharedInstance].audioStreamer.delegate = self;
-    //[delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
     [DIFMStreamer sharedInstance].audioStreamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
     
     [super viewDidLoad];
@@ -162,8 +145,19 @@
     // separate the artist from the song, to be able to present it in a nicer way
     NSArray *stringParts = [parsedMetaData componentsSeparatedByString:@" - "];
     
-    self.nowPlayingArtist.text = [stringParts objectAtIndex:0];
-    self.nowPlayingSong.text = [stringParts objectAtIndex:1];
+    if ([stringParts count] == 2) {
+        self.nowPlayingArtist.text = [stringParts objectAtIndex:0];
+        self.nowPlayingSong.text = [stringParts objectAtIndex:1];
+    }
+    
+    else if ([stringParts count] == 1) {
+        self.nowPlayingArtist.text = @"";
+        self.nowPlayingSong.text = [stringParts objectAtIndex:0];
+    }
+    
+    else {
+        NSLog(@"Undefined behavior. The metadata array isn't the expected size.");
+    }
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
