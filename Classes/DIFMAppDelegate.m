@@ -7,17 +7,11 @@
 //
 
 #import "DIFMAppDelegate.h"
-#import "PlayerViewController.h"
-
-// Sound and Network headers for streaming
-#import "AudioStreamer.h"
 
 @implementation DIFMAppDelegate
 
 @synthesize window;
 @synthesize tabBarController;
-@synthesize streamer;
-@synthesize currentChannel;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
     // Override point for customization after application launch

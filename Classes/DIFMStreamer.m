@@ -8,9 +8,15 @@
 
 #import "DIFMStreamer.h"
 
+// Sound and Network headers for streaming
+#import "AudioStreamer.h"
+
 @implementation DIFMStreamer
 
+@synthesize audioStreamer;
 @synthesize currentChannel;
+@synthesize persistentURL;
+@synthesize totalSecondsLapsed;
 
 + (DIFMStreamer *) sharedInstance {
     static DIFMStreamer *gInstance = NULL;
@@ -23,7 +29,17 @@
     return gInstance;
 }
 
-- (void) setStreamerURL:(NSString *)streamerURL {
+- (void) setStreamerURL:(NSURL *)streamerURL {
+    [self.persistentURL release];
+    self.persistentURL = streamerURL;
+    
+    [self stopAndReleaseStreamer];
+    
+    // create a new one and start it
+    self.audioStreamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+}
+
+- (void) setStreamerURLWithString:(NSString *)streamerURL {
     NSString *escapedValue =
     [(NSString *)CFURLCreateStringByAddingPercentEscapes(
                                                          nil,
@@ -33,32 +49,33 @@
                                                          kCFStringEncodingUTF8)
      autorelease];
     
-    [persistentURL release];
-	persistentURL = [NSURL URLWithString:escapedValue];
+    [self.persistentURL release];
+	self.persistentURL = [NSURL URLWithString:escapedValue];
     
+    [self stopAndReleaseStreamer];
+    
+    // create a new one and start it
+    self.audioStreamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+}
+
+- (void) restartStreamerWithPersistentData {
+    [self setStreamerURL:self.persistentURL];
+    [self.audioStreamer start];
+}
+
+- (void) stopAndReleaseStreamer {
     if (self.audioStreamer != nil) {
         // stop and release the old stream
         [self.audioStreamer stop];
         [self.audioStreamer release];
     }
-    
-    // create a new one and start it
-    self.audioStreamer = [[AudioStreamer alloc] initWithURL:url];
-}
-
-- (void) stopAndReleaseStreamer {
-    // persistent data
-    self.totalSecondsLapsed = self.streamer.progress;
-    
-    [self.streamer stop];
-    [self.streamer release];
 }
 
 - (void) destroyStreamer {
-    if (self.streamer)
+    if (self.audioStreamer)
 	{
         [self stopAndReleaseStreamer];
-		self.streamer = nil;
+		self.audioStreamer = nil;
 	}
 }
 

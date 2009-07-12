@@ -7,7 +7,8 @@
 //
 
 #import "PlayerViewController.h"
-#import "DIFMAppDelegate.h"
+
+#import "DIFMStreamer.h"
 #import "AudioStreamer.h"
 
 #import <MediaPlayer/MediaPlayer.h>
@@ -25,9 +26,9 @@
 @synthesize pauseButton;
 
 - (void)pauseToggle:(id)sender {
-    if (![delegate.streamer isPlaying]) {
+    if (![[DIFMStreamer sharedInstance].audioStreamer isPlaying]) {
         // sanity check -- no channel to stream, alert the user
-        if (delegate.streamer.url == nil) {
+        if ([DIFMStreamer sharedInstance].persistentURL == nil) {
             UIAlertView *noURL = [[UIAlertView alloc] initWithTitle:@"No Channel Specified"
                                                         message:@"You have not chosen a channel to stream."
                                                         delegate:nil
@@ -35,11 +36,14 @@
                                                         otherButtonTitles:nil];
             [noURL show];
             [noURL release];
+            
+            return;
         }
-        
+
         // play the same stream again cause they just paused and pressed play again
-//        delegate.streamer = [[AudioStreamer alloc] initWithURL:persistentURL];
-//        
+        [[DIFMStreamer sharedInstance] restartStreamerWithPersistentData];
+
+
 //        progressUpdateTimer =
 //        [NSTimer
 //         scheduledTimerWithTimeInterval:1
@@ -52,22 +56,14 @@
 //         selector:@selector(playbackStateChanged:)
 //         name:ASStatusChangedNotification
 //         object:delegate.streamer];
-//        
-//        [delegate.streamer setDelegate:self];
-//        [delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-//        
-//        // loading?
-//        [pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
         
-        
-        // pause is a toggle method, but it seems to have unpredictable
-        // implications on the buffers. perhaps it is better to simply
-        // stop the stream and reinitiate it. will have to keep a persistent
-        // time in seconds as well as URL
-        [delegate.streamer pause];
+        [[DIFMStreamer sharedInstance].audioStreamer setDelegate:self];
+        [[DIFMStreamer sharedInstance].audioStreamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
+
+        // loading?
+        //[pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
     } else {
-        // pause the stream
-        [delegate.streamer pause];
+        [[DIFMStreamer sharedInstance].audioStreamer stop];
         
         // save the stream progress
         
@@ -80,15 +76,13 @@
     [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
     
-    delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
-    
     MPVolumeView *mpVolumeView = [[[MPVolumeView alloc] initWithFrame:self.volumeView.bounds] autorelease];
 	[self.volumeView addSubview:mpVolumeView];
 	[mpVolumeView sizeToFit];
     
     progressUpdateTimer =
     [NSTimer
-     scheduledTimerWithTimeInterval:0.5
+     scheduledTimerWithTimeInterval:1.0
      target:self
      selector:@selector(updateProgress:)
      userInfo:nil
@@ -97,12 +91,12 @@
      addObserver:self
      selector:@selector(playbackStateChanged:)
      name:ASStatusChangedNotification
-     object:delegate.streamer];
+     object:[DIFMStreamer sharedInstance].audioStreamer];
     
     //[delegate.streamer setDelegate:self];
-    delegate.streamer.delegate = self;
+    [DIFMStreamer sharedInstance].audioStreamer.delegate = self;
     //[delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-    delegate.streamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
+    [DIFMStreamer sharedInstance].audioStreamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
     
     [super viewDidLoad];
 }
@@ -126,7 +120,14 @@
 }
 
 - (void)dealloc {
-    [self destroyStreamer]; // get rid of the streamer correctly
+    [[DIFMStreamer sharedInstance] destroyStreamer];
+    
+    [[NSNotificationCenter defaultCenter]
+     removeObserver:self
+     name:ASStatusChangedNotification
+     object:[DIFMStreamer sharedInstance].audioStreamer];
+    [progressUpdateTimer invalidate];
+    progressUpdateTimer = nil;
     
     if (progressUpdateTimer) // and the timer
 	{
@@ -145,7 +146,6 @@
     [pauseButton release]; // the pause button
     
     [formattedTimeString release]; // the formatted time string
-    [persistentURL release]; // get rid of the url
     
     [super dealloc];
 }
@@ -156,8 +156,8 @@
 - (void)metaDataUpdated:(NSString *)metaData {
     // parse the important part
     NSMutableString *parsedMetaData = [NSMutableString stringWithString:metaData];
-    [parsedMetaData replaceOccurrencesOfString:@"StreamTitle='" withString:@""];
-    [parsedMetaData replaceOccurrencesOfString:@"';StreamUrl='';" withString:@""];
+    [parsedMetaData replaceOccurrencesOfString:@"StreamTitle='" withString:@"" options:0 range:NSMakeRange(0, [parsedMetaData length])];
+    [parsedMetaData replaceOccurrencesOfString:@"';StreamUrl='';" withString:@"" options:0 range:NSMakeRange(0, [parsedMetaData length])];
     
     // separate the artist from the song, to be able to present it in a nicer way
     NSArray *stringParts = [parsedMetaData componentsSeparatedByString:@" - "];
@@ -167,34 +167,32 @@
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
-    int totalSeconds = 0;
+    if ([[DIFMStreamer sharedInstance].audioStreamer isPlaying]) {
+        [DIFMStreamer sharedInstance].totalSecondsLapsed++;
+    }
     
-    if ([[DIFMStreamer sharedInstance].audioStreamer isIdle]) {
-        totalSeconds = [DIFMStreamer sharedInstance].totalSecondsLapsed;
-    } else {
-        totalSeconds = (int)[DIFMStreamer sharedInstance].streamer.progress + (int)[DIFMStreamer sharedInstance].totalSecondsLapsed;
-    } // need to also test to see 
+    int totalSeconds = [DIFMStreamer sharedInstance].totalSecondsLapsed;
     
     // empty the string again
     [formattedTimeString setString:@""];
     
-    hours = totalSeconds / (60 * 60);
+    hours = (int)totalSeconds / (60 * 60);
     
     // only show the hour part if there has been hours passed
     if (hours > 0)
         [formattedTimeString appendFormat:@"%02d:", hours];
     
-    minutes = (totalSeconds / 60) % 60;
-    seconds = totalSeconds % 60;
+    minutes = (int)(totalSeconds / 60) % 60;
+    seconds = (int)totalSeconds % 60;
     
     // format the string
     [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
     
-    if (delegate.streamer.bitRate != 0.0) {
+    if ([DIFMStreamer sharedInstance].audioStreamer.bitRate != 0.0) {
         playTime.text = formattedTimeString;
         
         // set stream/channel info - memory problem?
-        self.streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", delegate.currentChannel, (delegate.streamer.bitRate / 1000)];
+        self.streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", [DIFMStreamer sharedInstance].currentChannel, ([DIFMStreamer sharedInstance].audioStreamer.bitRate / 1000)];
 	} else {
 		self.playTime.text = formattedTimeString;
         
@@ -202,40 +200,22 @@
 	}
 }
 
-- (void)destroyStreamer {
-	if (delegate.streamer)
-	{
-		[[NSNotificationCenter defaultCenter]
-         removeObserver:self
-         name:ASStatusChangedNotification
-         object:delegate.streamer];
-		[progressUpdateTimer invalidate];
-		progressUpdateTimer = nil;
-		
-		[delegate.streamer stop];
-		[delegate.streamer release];
-		delegate.streamer = nil;
-	}
-}
-
 - (void)playbackStateChanged:(NSNotification *)aNotification {
-	if ([delegate.streamer isWaiting])
+	if ([[DIFMStreamer sharedInstance].audioStreamer isWaiting])
 	{
         [self.pauseButton setImage:[UIImage imageNamed:@"loading.png"] forState:UIControlStateNormal];
 	}
-	else if ([delegate.streamer isPlaying])
+	else if ([[DIFMStreamer sharedInstance].audioStreamer isPlaying])
 	{
         [self.pauseButton setImage:[UIImage imageNamed:@"pause.png"] forState:UIControlStateNormal];
 	}
-    else if ([delegate.streamer isPaused])
+    else if ([[DIFMStreamer sharedInstance].audioStreamer isPaused])
     {
         [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
     }
-	else if ([delegate.streamer isIdle])
+	else if ([[DIFMStreamer sharedInstance].audioStreamer isIdle])
 	{
-        // commented out the stop/reinitiate pause process, which might be better
-        //persistentURL = [delegate.streamer.url retain]; // gotta retain it cause it's about to be released
-		//[self destroyStreamer];
+        [[DIFMStreamer sharedInstance] destroyStreamer];
 		[pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
 	}
 }

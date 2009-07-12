@@ -34,12 +34,6 @@
     
     NSTimer *progressUpdateTimer; // timer for playTime
     NSMutableString *formattedTimeString; // to present the time
-    
-    // to access the streamer
-    DIFMAppDelegate *delegate;
-    
-    // for stoping and replaying the stream
-    NSURL *persistentURL;
 }
 
 // presentational
@@ -51,14 +45,13 @@
 
 @property (nonatomic, retain) IBOutlet UIView *volumeView;
 
-// action inducing
+// actions
 @property (nonatomic, retain) IBOutlet UIButton *pauseButton;
 
 // action handler
 - (void)pauseToggle:(id)sender;
 
 // stream specific
-- (void)destroyStreamer;
 - (void)updateProgress:(NSTimer *)aNotification;
 - (void)metaDataUpdated:(NSString *)metaData;
 - (void)playbackStateChanged:(NSNotification *)aNotification;

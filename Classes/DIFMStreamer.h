@@ -11,22 +11,26 @@
 @class AudioStreamer;
 
 @interface DIFMStreamer : NSObject {
-    AudioStreamer audioStreamer;
+    AudioStreamer *audioStreamer;
     
     // persistent data -- for when stopping/playing
     NSString *currentChannel;
     NSURL *persistentURL;
-    double totalSecondsLapsed;
+    int totalSecondsLapsed;
 }
 
-@property (nonatomic, retain) AudioStreamer audioStreamer;
-@property (nonatomic, retain) NSURL *persistentURL;
+@property (nonatomic, retain) AudioStreamer *audioStreamer;
 @property (copy) NSString *currentChannel;
+@property (nonatomic, retain) NSURL *persistentURL;
+@property int totalSecondsLapsed;
 
 // methods
 
 + (DIFMStreamer *) sharedInstance;
-- (void) setStreamerURL:(NSString *)theURL;
+- (void) setStreamerURL:(NSURL *)streamURL;
+- (void) setStreamerURLWithString:(NSString *)streamURL;
 - (void) stopAndReleaseStreamer;
+- (void) restartStreamerWithPersistentData;
+- (void) destroyStreamer;
 
 @end

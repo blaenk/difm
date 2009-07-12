@@ -9,6 +9,7 @@
 #import "ChannelsViewController.h"
 
 #import "DIFMAppDelegate.h"
+#import "DIFMStreamer.h"
 
 // Sound and Network headers for streaming
 #import "AudioStreamer.h"
@@ -78,42 +79,31 @@
 #pragma mark Table View Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSUInteger row = [indexPath row];
     
     NSString *selectedGenre = [genres objectAtIndex:row];
     
     NSString *streamURL = [channels objectForKey:selectedGenre];
 
-    // set the new streamURL here
-    NSString *escapedValue =
-    [(NSString *)CFURLCreateStringByAddingPercentEscapes(
-                                                         nil,
-                                                         (CFStringRef)streamURL,
-                                                         NULL,
-                                                         NULL,
-                                                         kCFStringEncodingUTF8)
-     autorelease];
-    
-	NSURL *url = [NSURL URLWithString:escapedValue];
-    
-    // stop and release the old stream
-    [delegate.streamer stop];
-    [delegate.streamer release];
-    
-    // create a new one and start it
-    delegate.streamer = [[AudioStreamer alloc] initWithURL:url];
-    //[delegate.streamer setDelegate:[[delegate.tabBarController viewControllers] objectAtIndex:0]];
-    delegate.streamer.delegate = [delegate.tabBarController.viewControllers objectAtIndex:0];
-    //[delegate.streamer setDidUpdateMetaDataSelector:@selector(metaDataUpdated:)];
-    delegate.streamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
-    [delegate.streamer start];
-    
-    // set the new channel name
-    delegate.currentChannel = selectedGenre;
-    
-    // change back to the player view
-    //delegate.tabBarController.selectedViewController = [[delegate.tabBarController viewControllers] objectAtIndex:0];
+    // don't do anything because they are the same channel
+    if ([selectedGenre isEqualToString:[DIFMStreamer sharedInstance].currentChannel]) {
+        return;
+    } else {
+        [[DIFMStreamer sharedInstance] destroyStreamer];
+        [DIFMStreamer sharedInstance].totalSecondsLapsed = 0;
+        [[DIFMStreamer sharedInstance] setStreamerURLWithString:streamURL];
+        
+        DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
+        [DIFMStreamer sharedInstance].audioStreamer.delegate = [delegate.tabBarController.viewControllers objectAtIndex:0];
+        [DIFMStreamer sharedInstance].audioStreamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
+        [[DIFMStreamer sharedInstance].audioStreamer start];
+        
+        // set the new channel name
+        [DIFMStreamer sharedInstance].currentChannel = selectedGenre;
+        
+        // change back to the player view
+        //delegate.tabBarController.selectedViewController = [[delegate.tabBarController viewControllers] objectAtIndex:0];
+    }
 }
 
 @end
