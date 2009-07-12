@@ -155,18 +155,25 @@
 
 - (void)metaDataUpdated:(NSString *)metaData {
     // parse the important part
-    NSString *temp = [metaData stringByReplacingOccurrencesOfString:@"StreamTitle='" withString:@""];
-    NSString *temp2 = [temp stringByReplacingOccurrencesOfString:@"';StreamUrl='';" withString:@""];
+    NSMutableString *parsedMetaData = [NSMutableString stringWithString:metaData];
+    [parsedMetaData replaceOccurrencesOfString:@"StreamTitle='" withString:@""];
+    [parsedMetaData replaceOccurrencesOfString:@"';StreamUrl='';" withString:@""];
     
     // separate the artist from the song, to be able to present it in a nicer way
-    NSArray *stringParts = [temp2 componentsSeparatedByString:@" - "];
+    NSArray *stringParts = [parsedMetaData componentsSeparatedByString:@" - "];
     
     self.nowPlayingArtist.text = [stringParts objectAtIndex:0];
     self.nowPlayingSong.text = [stringParts objectAtIndex:1];
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
-    int totalSeconds = (int)delegate.streamer.progress;
+    int totalSeconds = 0;
+    
+    if ([[DIFMStreamer sharedInstance].audioStreamer isIdle]) {
+        totalSeconds = [DIFMStreamer sharedInstance].totalSecondsLapsed;
+    } else {
+        totalSeconds = (int)[DIFMStreamer sharedInstance].streamer.progress + (int)[DIFMStreamer sharedInstance].totalSecondsLapsed;
+    } // need to also test to see 
     
     // empty the string again
     [formattedTimeString setString:@""];
