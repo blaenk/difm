@@ -58,9 +58,7 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-    [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];
-    formattedTimeString = [[NSMutableString alloc] initWithCapacity:8]; // 12:12:12
-    
+    [self.pauseButton setImage:[UIImage imageNamed:@"play.png"] forState:UIControlStateNormal];    
     MPVolumeView *mpVolumeView = [[[MPVolumeView alloc] initWithFrame:self.volumeView.bounds] autorelease];
 	[self.volumeView addSubview:mpVolumeView];
 	[mpVolumeView sizeToFit];
@@ -128,8 +126,6 @@
     
     [pauseButton release]; // the pause button
     
-    [formattedTimeString release]; // the formatted time string
-    
     [super dealloc];
 }
 
@@ -161,34 +157,14 @@
 }
 
 - (void)updateProgress:(NSTimer *)updatedTimer {
-    if ([[DIFMStreamer sharedInstance].audioStreamer isPlaying]) {
-        [DIFMStreamer sharedInstance].totalSecondsLapsed++;
-    }
-    
-    int totalSeconds = [DIFMStreamer sharedInstance].totalSecondsLapsed;
-    
-    // empty the string again
-    [formattedTimeString setString:@""];
-    
-    hours = (int)totalSeconds / (60 * 60);
-    
-    // only show the hour part if there has been hours passed
-    if (hours > 0)
-        [formattedTimeString appendFormat:@"%02d:", hours];
-    
-    minutes = (int)(totalSeconds / 60) % 60;
-    seconds = (int)totalSeconds % 60;
-    
-    // format the string
-    [formattedTimeString appendFormat:@"%02d:%02d", minutes, seconds];
+    [[DIFMStreamer sharedInstance] tickSeconds];
     
     if ([DIFMStreamer sharedInstance].audioStreamer.bitRate != 0.0) {
-        playTime.text = formattedTimeString;
+        self.playTime.text = [[DIFMStreamer sharedInstance] formattedTimeString];
         
-        // set stream/channel info - memory problem?
         self.streamInfo.text = [NSString stringWithFormat:@"%@ Channel - %dkbps", [DIFMStreamer sharedInstance].currentChannel, ([DIFMStreamer sharedInstance].audioStreamer.bitRate / 1000)];
 	} else {
-		self.playTime.text = formattedTimeString;
+		self.playTime.text = [[DIFMStreamer sharedInstance] formattedTimeString];
         
         self.streamInfo.text = @"Nothing Playing";
 	}

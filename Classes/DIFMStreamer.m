@@ -29,6 +29,27 @@
     return gInstance;
 }
 
+- (void) tickSeconds {
+    if ([self.audioStreamer isPlaying]) {
+        self.totalSecondsLapsed++;
+    }
+}
+
+- (NSString *) formattedTimeString {
+    NSString *timeString = nil;
+    
+    hours = self.totalSecondsLapsed / (60 * 60);
+    minutes = (self.totalSecondsLapsed / 60) % 60;
+    seconds = self.totalSecondsLapsed % 60;
+    
+    if (hours > 0)
+        timeString = [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
+    else
+        timeString = [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    
+    return timeString;
+}
+
 - (void) setStreamerURL:(NSURL *)streamerURL {
     [self.persistentURL release];
     self.persistentURL = streamerURL;

@@ -24,16 +24,7 @@
     // Volume View
     UIView *volumeView;
     
-    // Internals
-    BOOL isPlaying;
-    
-    // Time - this isn't needed, yet
-    int seconds;
-    int minutes;
-    int hours;
-    
     NSTimer *progressUpdateTimer; // timer for playTime
-    NSMutableString *formattedTimeString; // to present the time
 }
 
 // presentational

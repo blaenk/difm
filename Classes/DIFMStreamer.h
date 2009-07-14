@@ -16,7 +16,12 @@
     // persistent data -- for when stopping/playing
     NSString *currentChannel;
     NSURL *persistentURL;
+    
+    // time specific
     int totalSecondsLapsed;
+    int hours;
+    int minutes;
+    int seconds;
 }
 
 @property (nonatomic, retain) AudioStreamer *audioStreamer;
@@ -32,5 +37,8 @@
 - (void) stopAndReleaseStreamer;
 - (void) restartStreamerWithPersistentData;
 - (void) destroyStreamer;
+
+- (void) tickSeconds;
+- (NSMutableString *) formattedTimeString;
 
 @end
