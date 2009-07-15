@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>Space Music</string>
+	<string>Trance</string>
+	<string>Vocal Trance</string>
+	<string>Electro House</string>
+	<string>Chillout</string>
+	<string>House</string>
+	<string>Soulful House</string>
+	<string>Hard Dance</string>
+	<string>Euro Dance</string>
+	<string>Minimal</string>
+	<string>Techno</string>
+	<string>Progressive</string>
+	<string>Goa-Psy Trance</string>
+	<string>Hardstyle</string>
+	<string>Hard Core</string>
+	<string>Lounge</string>
+	<string>Exposure NYC</string>
+	<string>DJ Mixes</string>
+	<string>Drug &apos;n&apos; Bass</string>
+	<string>Oldschool Electronica</string>
+	<string>Breaks</string>
+	<string>Ambient</string>
+	<string>Future Synthpop</string>
+	<string>Gabber</string>
+	<string>Replay</string>
+</array>
+</plist>
