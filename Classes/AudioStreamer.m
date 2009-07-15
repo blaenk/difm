@@ -626,7 +626,7 @@ void ASReadStreamCallBack
 		//
 		// Create the GET request
 		//
-		CFHTTPMessageRef message= CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (CFURLRef)url, kCFHTTPVersion1_1);
+		CFHTTPMessageRef message = CFHTTPMessageCreateRequest(NULL, (CFStringRef)@"GET", (CFURLRef)url, kCFHTTPVersion1_1);
         // METADATA //
         CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Icy-MetaData"), CFSTR("1"));
         // set the user agent here?
@@ -1224,6 +1224,7 @@ cleanup:
                             // Not an ICY response
                             NSString *metaInt;
                             metaInt = (NSString *) CFHTTPMessageCopyHeaderFieldValue(myResponse, CFSTR("Icy-Metaint"));	
+                            CFRelease(myResponse); // no longer need the response
                             metaDataInterval = [metaInt intValue];
                             [metaInt release];
                             if (metaInt)
@@ -1233,24 +1234,29 @@ cleanup:
                             }
                         }
                     }
+                    
                     else if (statusCode == 302)
                     {
                         // Redirect!
                         redirect = YES;
                         //NSLog(@"Redirect to another URL.");
                         
+                        CFStringRef headerValue = CFHTTPMessageCopyHeaderFieldValue(myResponse, CFSTR("Location"));
                         NSString *escapedValue =
                         [(NSString *)CFURLCreateStringByAddingPercentEscapes(
                                                                              nil,
-                                                                             CFHTTPMessageCopyHeaderFieldValue(myResponse, CFSTR("Location")),
+                                                                             headerValue,
                                                                              NULL,
                                                                              NULL,
                                                                              kCFStringEncodingUTF8)
                          autorelease];
                         
                         url = [NSURL URLWithString:escapedValue];
+                        CFRelease(headerValue);
+                        CFRelease(myResponse); // no longer need the response
                         // failed = YES;
                     }
+                    
                     else
                     {
                         // Invalid

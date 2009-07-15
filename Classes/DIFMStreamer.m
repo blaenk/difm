@@ -16,7 +16,6 @@
 @synthesize audioStreamer;
 @synthesize currentChannel;
 @synthesize persistentURL;
-@synthesize totalSecondsLapsed;
 
 + (DIFMStreamer *) sharedInstance {
     static DIFMStreamer *gInstance = NULL;
@@ -31,16 +30,20 @@
 
 - (void) tickSeconds {
     if ([self.audioStreamer isPlaying]) {
-        self.totalSecondsLapsed++;
+        totalSecondsLapsed++;
     }
+}
+
+- (void) resetSeconds {
+    totalSecondsLapsed = 0;
 }
 
 - (NSString *) formattedTimeString {
     NSString *timeString = nil;
     
-    hours = self.totalSecondsLapsed / (60 * 60);
-    minutes = (self.totalSecondsLapsed / 60) % 60;
-    seconds = self.totalSecondsLapsed % 60;
+    hours = totalSecondsLapsed / (60 * 60);
+    minutes = (totalSecondsLapsed / 60) % 60;
+    seconds = totalSecondsLapsed % 60;
     
     if (hours > 0)
         timeString = [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
@@ -51,13 +54,10 @@
 }
 
 - (void) setStreamerURL:(NSURL *)streamerURL {
-    [self.persistentURL release];
-    self.persistentURL = streamerURL;
-    
     [self stopAndReleaseStreamer];
     
     // create a new one and start it
-    self.audioStreamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+    self.audioStreamer = [[AudioStreamer alloc] initWithURL:self.persistentURL];
 }
 
 - (void) setStreamerURLWithString:(NSString *)streamerURL {
@@ -76,7 +76,7 @@
     [self stopAndReleaseStreamer];
     
     // create a new one and start it
-    self.audioStreamer = [[AudioStreamer alloc] initWithURL:persistentURL];
+    self.audioStreamer = [[AudioStreamer alloc] initWithURL:self.persistentURL];
 }
 
 - (void) restartStreamerWithPersistentData {

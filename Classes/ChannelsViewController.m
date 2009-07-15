@@ -85,17 +85,19 @@
     
     NSString *streamURL = [channels objectForKey:selectedGenre];
 
-    // don't do anything because they are the same channel
-    if ([selectedGenre isEqualToString:[DIFMStreamer sharedInstance].currentChannel]) {
+    // don't re-start the stream if it's already playing
+    if ([selectedGenre isEqualToString:[DIFMStreamer sharedInstance].currentChannel] &&
+        [[DIFMStreamer sharedInstance].audioStreamer isPlaying]) {
         return;
     } else {
         [[DIFMStreamer sharedInstance] destroyStreamer];
-        [DIFMStreamer sharedInstance].totalSecondsLapsed = 0;
+        [[DIFMStreamer sharedInstance] resetSeconds];
         [[DIFMStreamer sharedInstance] setStreamerURLWithString:streamURL];
         
         DIFMAppDelegate *delegate = (DIFMAppDelegate *)[[UIApplication sharedApplication] delegate];
         [DIFMStreamer sharedInstance].audioStreamer.delegate = [delegate.tabBarController.viewControllers objectAtIndex:0];
         [DIFMStreamer sharedInstance].audioStreamer.didUpdateMetaDataSelector = @selector(metaDataUpdated:);
+        
         [[DIFMStreamer sharedInstance].audioStreamer start];
         
         // set the new channel name

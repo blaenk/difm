@@ -27,7 +27,6 @@
 @property (nonatomic, retain) AudioStreamer *audioStreamer;
 @property (copy) NSString *currentChannel;
 @property (nonatomic, retain) NSURL *persistentURL;
-@property int totalSecondsLapsed;
 
 // methods
 
@@ -39,6 +38,7 @@
 - (void) destroyStreamer;
 
 - (void) tickSeconds;
+- (void) resetSeconds;
 - (NSMutableString *) formattedTimeString;
 
 @end

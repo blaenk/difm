@@ -141,6 +141,11 @@
     // separate the artist from the song, to be able to present it in a nicer way
     NSArray *stringParts = [parsedMetaData componentsSeparatedByString:@" - "];
     
+    // maybe it's a messy song title like this: artist-song
+    if ([[stringParts objectAtIndex:0] isEqualToString:parsedMetaData]) {
+        stringParts = [parsedMetaData componentsSeparatedByString:@"-"];
+    }
+    
     if ([stringParts count] == 2) {
         self.nowPlayingArtist.text = [stringParts objectAtIndex:0];
         self.nowPlayingSong.text = [stringParts objectAtIndex:1];
